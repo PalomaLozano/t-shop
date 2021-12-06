@@ -1,6 +1,21 @@
 'use strict';
 
-const cardsElement = document.querySelector('.js-cards');
+const cardsElement = document.querySelector('.js-products');
+
+const product1Name = 'Node JS';
+const product1Price = '12';
+const product1ImageUrl = './images/node-js.jpg';
+let product1Quantity = '1';
+
+const product2Name = 'Javascript';
+const product2Price = '13';
+const product2ImageUrl = './images/javascript.jpg';
+let product2Quantity = '1';
+
+const product3Name = 'Node JS';
+const product3Price = '15';
+const product3ImageUrl = './images/react.jpg';
+let product3Quantity = '1';
 
 function getProductHtmlCode(name, price, imgUrl) {
   let htmlCode = `<article class="card">`;
@@ -12,7 +27,7 @@ function getProductHtmlCode(name, price, imgUrl) {
   return htmlCode;
 }
 
-function paintPorducts() {
+function paintProducts() {
   const product1 = getProductHtmlCode('Node JS', 12.0, './images/node-js.jpg');
   const product2 = getProductHtmlCode(
     'JavaScript',
@@ -23,4 +38,45 @@ function paintPorducts() {
   cardsElement.innerHTML = product1 + product2 + product3;
 }
 
-paintPorducts();
+paintProducts();
+
+//paint cart items
+const cartElement = document.querySelector('.js-cart');
+
+function getCartElement(name, price, quantity) {
+  let htmlCode = '';
+  htmlCode += `<tr>`;
+  htmlCode += `<td>${name}</td>`;
+  htmlCode += `<td>${price}€</td>`;
+  htmlCode += `<button class ="js-dec-btn card__btn">-</button>`;
+  htmlCode += `${quantity}`;
+  htmlCode += `<button class ="js-dec-btn card__btn">+</button>`;
+  htmlCode += `</td>`;
+  htmlCode += `<td class="text-align-right">${price * quantity}€</td>`;
+  htmlCode += `</tr>`;
+  return htmlCode;
+}
+
+function getCartTotalHtmlCode(totalPrice) {
+  let htmlCode = '';
+  htmlCode += `<tr class"text--bold">`;
+  htmlCode += `<td>Total</td>`;
+  htmlCode += `<td colspan="3" class="text-align-right">${totalPrice}€</ts>`;
+  htmlCode += `</tr>`;
+  return htmlCode;
+}
+
+function paintCartItems() {
+  const totalPrice =
+    product1Price * product1Quantity +
+    product2Price * product2Quantity +
+    product3Price * product3Quantity;
+  const item1 = getCartElement(product1Name, product1Price, product1Quantity);
+  const item2 = getCartElement(product2Name, product2Price, product2Quantity);
+  const item3 = getCartElement(product3Name, product3Price, product3Quantity);
+  const total = getCartTotalHtmlCode(totalPrice);
+  cartElement.innerHTML = item1 + item2 + item3 + total;
+  listenCartBtns();
+}
+
+paintCartItems();
