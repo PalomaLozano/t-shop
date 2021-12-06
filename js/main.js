@@ -5,17 +5,17 @@ const cardsElement = document.querySelector('.js-products');
 const product1Name = 'Node JS';
 const product1Price = '12';
 const product1ImageUrl = './images/node-js.jpg';
-let product1Quantity = '1';
+let product1Quantity = 1;
 
 const product2Name = 'Javascript';
 const product2Price = '13';
 const product2ImageUrl = './images/javascript.jpg';
-let product2Quantity = '1';
+let product2Quantity = 1;
 
 const product3Name = 'Node JS';
 const product3Price = '15';
 const product3ImageUrl = './images/react.jpg';
-let product3Quantity = '1';
+let product3Quantity = 1;
 
 function getProductHtmlCode(name, price, imgUrl) {
   let htmlCode = `<article class="card">`;
@@ -78,5 +78,26 @@ function paintCartItems() {
   cartElement.innerHTML = item1 + item2 + item3 + total;
   listenCartBtns();
 }
+
+const restBtn = document.querySelector('.js-rest');
+const sumBtn = document.querySelector('.js-sum');
+
+function handleQuantity(ev) {
+  const currentTarget = ev.currentTarget;
+  if (currentTarget.classList.contains('js-sum')) {
+    product1Quantity += 1;
+  } else if (product1Quantity > 0) {
+    product1Quantity -= 1;
+  }
+  paintCartItems();
+}
+
+// function handleRest1CountBtn() {
+//   product1Quantity -= 1;
+//   paintCartItems();
+// }
+
+sumBtn.addEventListener('click', handleQuantity);
+restBtn.addEventListener('click', handleQuantity);
 
 paintCartItems();
