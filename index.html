@@ -30,35 +30,39 @@
             <td class="text-align-right">Total</td>
           </tr>
         </thead>
-        <tbody class="js-cart">
-          <!-- <tr>
-            <td>JavaScript</td>
-            <td>15,00</td>
-            <td>
-              <button class="card__btn">-</button>
-              2
-              <button class="card__btn">+</button>
-            </td>
-            <td class="text-align-right">30,00€</td>
-          </tr>
-          <tr>
-            <td>Node JS</td>
-            <td>12,00</td>
-            <td>
-              <button class="card__btn">-</button>
-              3
-              <button class="card__btn">+</button>
-            </td>
-            <td class="text-align-right">36,00€</td>
-          </tr>
-          <tr class="text--bold">
-            <td>Total</td>
-            <td colspan="3" class="text-align-right">66,00€</td>
-          </tr> -->
-        </tbody>
+        <tbody class="js-cart"></tbody>
       </table>
-      <!-- <button class="js-sum card__btn">+</button>
-      <button class="js-rest card__btn">-</button> -->
+
+      <form action="" class="mt-1">
+        <h2 class="title--medium">¿Dónde te lo enviamos?</h2>
+        <div>
+          <label class="form__label" for="adress">Dirección</label>
+          <input
+            class="js-adress form__input-text"
+            type="text"
+            name="adress"
+            id="adress"
+          />
+        </div>
+        <div>
+          <label class="form__label" for="adress">Ciudad</label>
+          <input
+            class="js-city form__input-text"
+            type="text"
+            name="city"
+            id="city"
+          />
+        </div>
+        <div>
+          <label class="form__label" for="adress">Código postal</label>
+          <input
+            class="js-zip form__input-text"
+            type="text"
+            name="zip"
+            id="zip"
+          />
+        </div>
+      </form>
     </div>
 
     <script src="./js/main.js"></script>
