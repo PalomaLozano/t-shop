@@ -1,40 +1,30 @@
 'use strict';
+
 const cardsElement = document.querySelector('.js-products');
 const userAdress = {};
 const adress = document.querySelector('.js-adress');
 const city = document.querySelector('.js-city');
 const zip = document.querySelector('.js-zip');
+let products = [];
 
-const product1 = {
-  name: 'Node JS',
-  price: 12,
-  imgUrl: './images/node-js.jpg',
-  quantity: 0,
-  decQuantity: decQuantityFunction,
-  sumQuantity: sumQuantityFunction,
-};
+//fetch
+function getApiCart() {
+  fetch('https://beta.adalab.es/ejercicios-extra/api/eshop/v1/cart.json')
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      products = data.cart.items;
+      paintProducts();
+      paintCartItems();
+    });
+}
 
-const product2 = {
-  name: 'Javascript',
-  price: 13,
-  imgUrl: './images/javascript.jpg',
-  quantity: 0,
-  decQuantity: decQuantityFunction,
-  sumQuantity: sumQuantityFunction,
-};
-
-const product3 = {
-  name: 'React',
-  price: 15,
-  imgUrl: './images/react.jpg',
-  quantity: 0,
-  decQuantity: decQuantityFunction,
-  sumQuantity: sumQuantityFunction,
-};
+getApiCart();
 
 function getProductHtmlCode(product) {
   let htmlCode = `<article class="card">`;
-  htmlCode += `<img src="${product.imgUrl}" class="card__img" alt="Camiseta de ${product.name}">`;
+  htmlCode += `<img src="${product.imageUrl}" class="card__img" alt="Camiseta de ${product.name}">`;
   htmlCode += `<h3 class="card__title">${product.name}</h3>`;
   htmlCode += `<p class="card__description">${product.price}€</p>`;
   htmlCode += `<button class="card__btn">Añadir a la cesta</button>`;
@@ -43,13 +33,14 @@ function getProductHtmlCode(product) {
 }
 
 function paintProducts() {
-  const _product1 = getProductHtmlCode(product1);
-  const _product2 = getProductHtmlCode(product2);
-  const _product3 = getProductHtmlCode(product3);
-  cardsElement.innerHTML = _product1 + _product2 + _product3;
+  let htmlCode = '';
+  for (const product of products) {
+    htmlCode += getProductHtmlCode(product);
+  }
+  cardsElement.innerHTML = htmlCode;
 }
 
-paintProducts();
+//paintProducts();
 
 //paint cart items
 const cartElement = document.querySelector('.js-cart');
@@ -71,48 +62,51 @@ function getCartElement(product) {
   return htmlCode;
 }
 
-function getCartTotalHtmlCode(totalPrice) {
+function getCartTotalHtmlCode() {
   let htmlCode = '';
   htmlCode += `<tr class"text--bold">`;
   htmlCode += `<td>Total</td>`;
-  htmlCode += `<td colspan="3" class="text-align-right">${totalPrice}€</ts>`;
+  htmlCode += `<td colspan="3" class="text-align-right">${getTotalPrice()}€</ts>`;
   htmlCode += `</tr>`;
   return htmlCode;
 }
 
 function paintCartItems() {
   cartElement.innerHTML = '';
-  const totalPrice =
-    product1.price * product1.quantity +
-    product2.price * product2.quantity +
-    product3.price * product3.quantity;
-  const item1 = getCartElement(product1);
-  const item2 = getCartElement(product2);
-  const item3 = getCartElement(product3);
-  const total = getCartTotalHtmlCode(totalPrice);
-  cartElement.innerHTML = item1 + item2 + item3 + total;
+  for (const cart of products) {
+    cartElement.innerHTML += getCartElement(cart);
+  }
+  cartElement.innerHTML += getCartTotalHtmlCode();
   listenCartBtns();
 }
 
-paintCartItems();
+function getTotalPrice() {
+  let total = 0;
+  for (const product of products) {
+    total += product.price * product.quantity;
+  }
+  return total;
+}
 
-function decQuantityFunction() {
-  if (this.quantity > 0) {
-    this.quantity -= 1;
+//paintCartItems();
+
+function decQuantity(product) {
+  if (product.quantity > 0) {
+    product.quantity -= 1;
   }
 }
 
-function sumQuantityFunction() {
-  this.quantity += 1;
+function sumQuantity(product) {
+  product.quantity += 1;
 }
 
 function handleQuantity(ev) {
   const currentTarget = ev.currentTarget;
+  //let product = 0;
   if (currentTarget.classList.contains('js-sumBtn')) {
-    product1.sumQuantity();
+    sumQuantity(products[0]);
   } else {
-    product1.decQuantity();
-    // product1.quantity -= 1;
+    decQuantity(products[0]);
   }
 
   paintCartItems();
