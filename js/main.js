@@ -1,10 +1,17 @@
 'use strict';
+const cardsElement = document.querySelector('.js-products');
+const userAdress = {};
+const adress = document.querySelector('.js-adress');
+const city = document.querySelector('.js-city');
+const zip = document.querySelector('.js-zip');
 
 const product1 = {
   name: 'Node JS',
   price: 12,
   imgUrl: './images/node-js.jpg',
   quantity: 0,
+  decQuantity: decQuantityFunction,
+  sumQuantity: sumQuantityFunction,
 };
 
 const product2 = {
@@ -12,6 +19,8 @@ const product2 = {
   price: 13,
   imgUrl: './images/javascript.jpg',
   quantity: 0,
+  decQuantity: decQuantityFunction,
+  sumQuantity: sumQuantityFunction,
 };
 
 const product3 = {
@@ -19,9 +28,9 @@ const product3 = {
   price: 15,
   imgUrl: './images/react.jpg',
   quantity: 0,
+  decQuantity: decQuantityFunction,
+  sumQuantity: sumQuantityFunction,
 };
-
-const cardsElement = document.querySelector('.js-products');
 
 function getProductHtmlCode(product) {
   let htmlCode = `<article class="card">`;
@@ -87,37 +96,27 @@ function paintCartItems() {
 
 paintCartItems();
 
+function decQuantityFunction() {
+  if (this.quantity > 0) {
+    this.quantity -= 1;
+  }
+}
+
+function sumQuantityFunction() {
+  this.quantity += 1;
+}
+
 function handleQuantity(ev) {
   const currentTarget = ev.currentTarget;
   if (currentTarget.classList.contains('js-sumBtn')) {
-    product1.quantity += 1;
-  } else if (product1.quantity > 0) {
-    product1.quantity -= 1;
+    product1.sumQuantity();
+  } else {
+    product1.decQuantity();
+    // product1.quantity -= 1;
   }
 
   paintCartItems();
 }
-
-// function handleQuantity(ev) {
-//   const currentTarget2 = ev.currentTarget;
-
-//   if (currentTarget2.classList.contains('js-sumBtn')) {
-//     product2.quantity += 1;
-//   } else if (product2.quantity > 0) {
-//     product2.quantity -= 1;
-//   }
-//   paintCartItems();
-// }
-
-// function handleQuantity(ev) {
-//   const currentTarget3 = ev.currentTarget;
-//   if (currentTarget3.classList.contains('js-sumBtn')) {
-//     product3.quantity += 1;
-//   } else if (product3.quantity > 0) {
-//     product3.quantity -= 1;
-//   }
-//   paintCartItems();
-// }
 
 function listenCartBtns() {
   const restBtn = document.querySelector('.js-restBtn');
@@ -128,11 +127,6 @@ function listenCartBtns() {
 }
 
 //adress
-const userAdress = {};
-
-const adress = document.querySelector('.js-adress');
-const city = document.querySelector('.js-city');
-const zip = document.querySelector('.js-zip');
 
 function handleAdress(ev) {
   const name = ev.currentTarget.name;
