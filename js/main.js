@@ -48,21 +48,21 @@ const addProduct = (ev) => {
   //id of clicked product
   const clickedId = ev.target.dataset.id;
   //we check if the item its in the cart
-  let foundItem;
-  for (const item of cart) {
-    if (item.id === clickedId) {
-      foundItem = item;
-    }
-  }
+  let foundItem = findArray(clickedId, cart);
+  // for (const item of cart) {
+  //   if (item.id === clickedId) {
+  //     foundItem = item;
+  //   }
+  // }
   //if not, we found the item
   if (foundItem === undefined) {
     //find clicked product
-    let foundProduct;
-    for (const product of products) {
-      if (product.id === clickedId) {
-        foundProduct = product;
-      }
-    }
+    let foundProduct = findArray(clickedId, products);
+    // for (const product of products) {
+    //   if (product.id === clickedId) {
+    //     foundProduct = product;
+    //   }
+    // }
     //added the product to the cart
     cart.push({
       id: foundProduct.id,
@@ -82,12 +82,12 @@ const restProduct = (ev) => {
   //id of clicked product
   const clickedId = ev.target.dataset.id;
   //we check if the item its in the cart
-  let foundItem;
-  for (const item of cart) {
-    if (item.id === clickedId) {
-      foundItem = item;
-    }
-  }
+  let foundItem = findArray(clickedId, cart);
+  // for (const item of cart) {
+  //   if (item.id === clickedId) {
+  //     foundItem = item;
+  //   }
+  // }
   //we check if there´s more than one unity in the cart
   if (foundItem.quantity > 1) {
     foundItem.quantity -= 1;
@@ -101,6 +101,17 @@ const restProduct = (ev) => {
     cart.splice(foundIndex, 1);
   }
   paintCartItems();
+};
+
+//we can do the same function for(const of) this way to reduce code
+const findArray = (clickedId, arr) => {
+  let foundItem;
+  for (const item of arr) {
+    if (item.id === clickedId) {
+      foundItem = item;
+    }
+  }
+  return foundItem;
 };
 
 //paint cart items
