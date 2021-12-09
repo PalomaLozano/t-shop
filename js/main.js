@@ -47,20 +47,33 @@ const handleAddBtn = () => {
 const addProduct = (ev) => {
   //id of clicked product
   const clickedId = ev.target.dataset.id;
-  //find clicked product
-  let foundProduct;
-  for (const product of products) {
-    if (product.id === clickedId) {
-      foundProduct = product;
+  //we check if the item its in the cart
+  let foundItem;
+  for (const item of cart) {
+    if (item.id === clickedId) {
+      foundItem = item;
     }
   }
-  //added the product to the cart
-  cart.push({
-    id: foundProduct.id,
-    name: foundProduct.name,
-    price: foundProduct.price,
-    quantity: 1,
-  });
+  //if not, we found the item
+  if (foundItem === undefined) {
+    //find clicked product
+    let foundProduct;
+    for (const product of products) {
+      if (product.id === clickedId) {
+        foundProduct = product;
+      }
+    }
+    //added the product to the cart
+    cart.push({
+      id: foundProduct.id,
+      name: foundProduct.name,
+      price: foundProduct.price,
+      quantity: 1,
+    });
+  } else {
+    //if the item its in the cart we increment the item
+    foundItem.quantity += 1;
+  }
 
   paintCartItems();
 };
