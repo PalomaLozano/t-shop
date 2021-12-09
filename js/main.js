@@ -89,7 +89,7 @@ function getCartElement(item) {
   htmlCode += `<td>`;
   htmlCode += `<button class ="js-restBtn card__btn">-</button>`;
   htmlCode += `${item.quantity}`;
-  htmlCode += `<button class ="js-sumBtn card__btn">+</button>`;
+  htmlCode += `<button class ="js-sumBtn card__btn" data-id=${item.id}>+</button>`;
   htmlCode += `</td>`;
   htmlCode += `<td class="text-align-right">${
     item.price * item.quantity
@@ -121,8 +121,14 @@ function paintCartItems() {
     cartElement.innerHTML += getCartElement(item);
   }
   cartElement.innerHTML += getCartTotalHtmlCode();
-  //listenCartBtns();
+  listenCartBtns();
 }
 
+function listenCartBtns() {
+  const cartBtn = document.querySelectorAll('.js-sumBtn');
+  for (const sumBtn of cartBtn) {
+    sumBtn.addEventListener('click', addProduct);
+  }
+}
 paintCartItems();
 getApi();
