@@ -9,6 +9,7 @@ const getApi = () => {
     .then((response) => response.json())
     .then((data) => {
       products = data.cart.items;
+
       paintProducts();
     });
 };
@@ -20,8 +21,9 @@ const getProductHtmlCode = (product) => {
   htmlCode += `<img src="${product.imageUrl}" class="card__img" alt="Camiseta de ${product.name}">`;
   htmlCode += `<h3 class="card__title">${product.name}</h3>`;
   htmlCode += `<p class="card__description">${product.price}€</p>`;
-  htmlCode += `<button class="js-add-product card__btn id="${product.id}">Añadir a la cesta</button>`;
+  htmlCode += `<button class="js-add-product card__btn" data-id="${product.id}">Añadir a la cesta</button>`;
   htmlCode += `</article>`;
+  console.log(product.id);
   return htmlCode;
 };
 
@@ -45,40 +47,39 @@ const handleAddBtn = () => {
 const addProduct = (ev) => {
   //id of clicked product
   const clickedId = ev.target.dataset.id;
-  console.log(clickedId);
   //find clicked product
   let foundProduct;
-
   for (const product of products) {
     if (product.id === clickedId) {
       foundProduct = product;
     }
   }
-  //add product to the cart
+  //added the product to the cart
   cart.push({
     id: foundProduct.id,
     name: foundProduct.name,
     price: foundProduct.price,
     quantity: 1,
   });
+
   paintCartItems();
 };
 
 //paint cart items
 const cartElement = document.querySelector('.js-cart');
 
-function getCartElement(product) {
+function getCartElement(item) {
   let htmlCode = '';
   htmlCode += `<tr>`;
-  htmlCode += `<td>${product.name}</td>`;
-  htmlCode += `<td>${product.price}€</td>`;
+  htmlCode += `<td>${item.name}</td>`;
+  htmlCode += `<td>${item.price}€</td>`;
   htmlCode += `<td>`;
   htmlCode += `<button class ="js-restBtn card__btn">-</button>`;
-  htmlCode += `${product.quantity}`;
+  htmlCode += `${item.quantity}`;
   htmlCode += `<button class ="js-sumBtn card__btn">+</button>`;
   htmlCode += `</td>`;
   htmlCode += `<td class="text-align-right">${
-    product.price * product.quantity
+    item.price * item.quantity
   }€</td>`;
   htmlCode += `</tr>`;
   return htmlCode;
@@ -93,21 +94,22 @@ function getCartTotalHtmlCode() {
   return htmlCode;
 }
 
-function paintCartItems() {
-  cartElement.innerHTML = '';
-  for (const cart of products) {
-    cartElement.innerHTML += getCartElement(cart);
-  }
-  cartElement.innerHTML += getCartTotalHtmlCode();
-  listenCartBtns();
-}
-
 function getTotalPrice() {
   let total = 0;
-  for (const product of products) {
-    total += product.price * product.quantity;
+  for (const item of cart) {
+    total += item.price * item.quantity;
   }
   return total;
 }
 
+function paintCartItems() {
+  cartElement.innerHTML = '';
+  for (const item of cart) {
+    cartElement.innerHTML += getCartElement(item);
+  }
+  cartElement.innerHTML += getCartTotalHtmlCode();
+  //listenCartBtns();
+}
+
+paintCartItems();
 getApi();
