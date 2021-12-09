@@ -43,7 +43,71 @@ const handleAddBtn = () => {
 };
 
 const addProduct = (ev) => {
-  console.log('Evento', ev.target, ev.target.dataset);
+  //id of clicked product
+  const clickedId = ev.target.dataset.id;
+  console.log(clickedId);
+  //find clicked product
+  let foundProduct;
+
+  for (const product of products) {
+    if (product.id === clickedId) {
+      foundProduct = product;
+    }
+  }
+  //add product to the cart
+  cart.push({
+    id: foundProduct.id,
+    name: foundProduct.name,
+    price: foundProduct.price,
+    quantity: 1,
+  });
+  paintCartItems();
 };
+
+//paint cart items
+const cartElement = document.querySelector('.js-cart');
+
+function getCartElement(product) {
+  let htmlCode = '';
+  htmlCode += `<tr>`;
+  htmlCode += `<td>${product.name}</td>`;
+  htmlCode += `<td>${product.price}€</td>`;
+  htmlCode += `<td>`;
+  htmlCode += `<button class ="js-restBtn card__btn">-</button>`;
+  htmlCode += `${product.quantity}`;
+  htmlCode += `<button class ="js-sumBtn card__btn">+</button>`;
+  htmlCode += `</td>`;
+  htmlCode += `<td class="text-align-right">${
+    product.price * product.quantity
+  }€</td>`;
+  htmlCode += `</tr>`;
+  return htmlCode;
+}
+
+function getCartTotalHtmlCode() {
+  let htmlCode = '';
+  htmlCode += `<tr class"text--bold">`;
+  htmlCode += `<td>Total</td>`;
+  htmlCode += `<td colspan="3" class="text-align-right">${getTotalPrice()}€</ts>`;
+  htmlCode += `</tr>`;
+  return htmlCode;
+}
+
+function paintCartItems() {
+  cartElement.innerHTML = '';
+  for (const cart of products) {
+    cartElement.innerHTML += getCartElement(cart);
+  }
+  cartElement.innerHTML += getCartTotalHtmlCode();
+  listenCartBtns();
+}
+
+function getTotalPrice() {
+  let total = 0;
+  for (const product of products) {
+    total += product.price * product.quantity;
+  }
+  return total;
+}
 
 getApi();
