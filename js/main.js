@@ -92,12 +92,12 @@ const restProduct = (ev) => {
   if (foundItem.quantity > 1) {
     foundItem.quantity -= 1;
   } else {
-    let foundIndex;
-    for (let i = 0; i < cart.length; i += 1) {
-      if (cart[i].id === clickedId) {
-        foundIndex = i;
-      }
-    }
+    let foundIndex = findIndexInArray(clickedId, cart);
+    // for (let i = 0; i < cart.length; i += 1) {
+    //   if (cart[i].id === clickedId) {
+    //     foundIndex = i;
+    //   }
+    // }
     cart.splice(foundIndex, 1);
   }
   paintCartItems();
@@ -105,13 +105,23 @@ const restProduct = (ev) => {
 
 //we can do the same function for(const of) this way to reduce code
 const findArray = (clickedId, arr) => {
-  let foundItem;
   for (const item of arr) {
     if (item.id === clickedId) {
-      foundItem = item;
+      return item;
     }
   }
-  return foundItem;
+  return undefined;
+};
+
+//we can do the same function for(let) this way to reduce code
+const findIndexInArray = (clickedId, arr) => {
+  for (let i = 0; i < arr.length; i += 1) {
+    if (arr[i] === clickedId) {
+      return i;
+    } else {
+      return undefined;
+    }
+  }
 };
 
 //paint cart items
