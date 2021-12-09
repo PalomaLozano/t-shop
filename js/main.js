@@ -78,6 +78,31 @@ const addProduct = (ev) => {
   paintCartItems();
 };
 
+const restProduct = (ev) => {
+  //id of clicked product
+  const clickedId = ev.target.dataset.id;
+  //we check if the item its in the cart
+  let foundItem;
+  for (const item of cart) {
+    if (item.id === clickedId) {
+      foundItem = item;
+    }
+  }
+  //we check if there´s more than one unity in the cart
+  if (foundItem.quantity > 1) {
+    foundItem.quantity -= 1;
+  } else {
+    let foundIndex;
+    for (let i = 0; i < cart.length; i += 1) {
+      if (cart[i].id === clickedId) {
+        foundIndex = i;
+      }
+    }
+    cart.splice(foundIndex, 1);
+  }
+  paintCartItems();
+};
+
 //paint cart items
 const cartElement = document.querySelector('.js-cart');
 
@@ -87,9 +112,9 @@ function getCartElement(item) {
   htmlCode += `<td>${item.name}</td>`;
   htmlCode += `<td>${item.price}€</td>`;
   htmlCode += `<td>`;
-  htmlCode += `<button class ="js-restBtn card__btn">-</button>`;
+  htmlCode += `<button class ="js-restBtn card__btn" data-id="${item.id}">-</button>`;
   htmlCode += `${item.quantity}`;
-  htmlCode += `<button class ="js-sumBtn card__btn" data-id=${item.id}>+</button>`;
+  htmlCode += `<button class ="js-sumBtn card__btn" data-id="${item.id}">+</button>`;
   htmlCode += `</td>`;
   htmlCode += `<td class="text-align-right">${
     item.price * item.quantity
@@ -125,9 +150,13 @@ function paintCartItems() {
 }
 
 function listenCartBtns() {
-  const cartBtn = document.querySelectorAll('.js-sumBtn');
-  for (const sumBtn of cartBtn) {
+  const cartSumBtn = document.querySelectorAll('.js-sumBtn');
+  for (const sumBtn of cartSumBtn) {
     sumBtn.addEventListener('click', addProduct);
+  }
+  const cartRestBtn = document.querySelectorAll('.js-restBtn');
+  for (const restBtn of cartRestBtn) {
+    restBtn.addEventListener('click', restProduct);
   }
 }
 paintCartItems();
