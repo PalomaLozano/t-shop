@@ -74,7 +74,7 @@ const addProduct = (ev) => {
     //if the item its in the cart we increment the item
     foundItem.quantity += 1;
   }
-
+  setInLocalStorage();
   paintCartItems();
 };
 
@@ -100,6 +100,7 @@ const restProduct = (ev) => {
     // }
     cart.splice(foundIndex, 1);
   }
+  setInLocalStorage();
   paintCartItems();
 };
 
@@ -180,5 +181,21 @@ function listenCartBtns() {
     restBtn.addEventListener('click', restProduct);
   }
 }
+
+const getFromLocalStorage = () => {
+  const localStorageCart = localStorage.getItem('cart');
+  if (localStorageCart !== null) {
+    cart = JSON.parse(localStorageCart);
+
+    paintCartItems();
+  }
+};
+//set localStorage
+const setInLocalStorage = () => {
+  const stringifyCart = JSON.stringify(cart);
+  localStorage.setItem('cart', stringifyCart);
+};
+
+getFromLocalStorage();
 paintCartItems();
 getApi();
